@@ -29,7 +29,7 @@ Do not treat total input tokens as direct cost without separating cached input. 
 
 Likewise, a child recommending another Reviewer does not establish review value. If the main thread cannot provide a complete Reviewer packet with one concrete unresolved risk, exact evidence, passed checks, excluded revalidation, and a bounded stop condition, count the extra Reviewer as avoidable routing rather than mandatory assurance.
 
-Treat `terminal_status=completed` only as evidence that the local trace contains `task_complete`; it does not prove correctness or a useful final report. Inspect interrupted or incomplete sessions before retrying, and record any usage that produced no usable return.
+`terminal_status=completed` 仅表示完成生命周期事件；`final_report_present` 表示保留日志中有实际最终回复，`last_turn_final_report_present` 表示最后一轮有最终回复。三者都不等于主线程验收通过；较早轮次的回复不能证明中断后的最后一轮已交付。 Inspect interrupted or incomplete sessions before retrying, and record any usage that produced no usable return.
 
 Compare `effective_sandbox` with the configured profile. When a parent live override produces `danger-full-access` for an Explorer or Reviewer, their read-only boundary is instructional rather than OS-enforced; do not count that route as security isolation.
 
@@ -42,7 +42,7 @@ When a child fails, inspect the shared target before counting the attempt as los
 - Keep `Explorer` on a lower-cost model when it reliably returns compact evidence and prevents noisy discovery from entering the main context. Remove it from short tasks whose sources the main thread must inspect anyway.
 - Use `Executor` for both small and substantial bounded work when the main thread has fixed unresolved decisions and deterministic checks exist. Measure whether Luna High enables useful multi-file execution with little rework; do not assume Max is more reliable without completed-return evidence.
 - Prefer improving decomposition and launching independent Executor slices in parallel before moving bounded implementation back into the main thread.
-- Use one `Reviewer` for a concrete unresolved risk. After substantial code changes, evaluate the three-lens Simplify review as one coordinated route: code quality, performance, and reuse.
+- 默认用一名 `Reviewer` 检查当前相关风险；代码质量、性能、复用是检查视角，不要求三个实例。只有证据范围可分离且并行有收益时才分开评估，不能把无发现报告自动判作浪费。
 
 Evaluate an Executor inside the real controlled workflow, including the candidate, main-thread inspection, and bounded repair. Strong main-thread acceptance can close observable implementation gaps cheaply. It cannot reliably compensate for a plausible but product-weaker architecture that passes shallow checks, so keep novel architecture, weak or visual oracles, export/compiler behavior, and high-consequence rollback or security judgment in the main thread.
 
@@ -51,3 +51,15 @@ Prefer changing routing thresholds or brief quality before upgrading every role'
 ## Report The Result
 
 For each spawn, record role, runtime model and effort, purpose, outcome quality, rework, task-scoped usage, and keep/change verdict. Separate confirmed findings from one-off impressions and note that local logs omit unavailable or ephemeral sessions.
+
+## 统计覆盖与决策记录
+
+`--days` 按本地时区的会话创建日期选择会话，并汇总这些会话保留的用量，不是逐事件的日账单。旧任务跨日续跑需要使用 `--task-id` 或 `--all`；不能把最近N天创建的会话用量称作最近N天全部消耗。
+
+历史诊断检查活动与归档目录的覆盖、会话ID去重、累计与增量快照的重复事件。缺少累计计数时，相同的增量也可能来自两次真实请求，不应仅按数值相等删除。计数重置、模型切换和压缩日志需要保留边界与未验证项；固定历史费率不等于当前账户账单。
+
+跨模型或思考档的多行记录属于同一个会话；完成、中断和报告数量先按会话去重。线程总耗时包含复用、等待与空闲，不能相加当作并行墙钟，也不能直接当首次交付延迟。
+
+较大任务在现有交接中记录实现直接通过、小修、重做、输入不足或外部阻塞，以及复审发现的采纳、驳回、重复或待验证。以主线程验收证据评价，不以子Agent自报评价；不要求普通小任务建立额外账本。
+
+长期修改模型时，在外部选型记录中写明生效配置、证据、适用边界及被替代结论，并给旧报告标注失效状态。正式Skill只保留当前规则，不嵌入私人会话或单次评估过程。

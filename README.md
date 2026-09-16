@@ -64,6 +64,12 @@ Use $team-mode for this task. Choose the smallest useful team, prefer parallel d
 
 You do not need to name every agent yourself. The main thread chooses the smallest useful team, adapts it to the task's value, and remains responsible for the combined result.
 
+## 调度与统计说明
+
+复杂任务保留主线程关键判断，必要时在宿主支持且实际验证生效的条件下升级原角色模型，不增加常驻角色。一般变更默认一名Reviewer检查相关风险，三个Simplify视角不对应固定三人。用量诊断覆盖本地活动与归档日志，区分计数重复、最终回复与完成事件。
+
+安装的自然语言入口、平台边界与测试命令见[中文说明](./README.zh-CN.md)。
+
 ## Customize
 
 You can change `model` and `model_reasoning_effort` in `agents/*.toml`. Preserve the role boundaries: Explorer and Reviewer stay read-only, mutation permissions remain with Executor, new reviews use fresh context, and final acceptance stays with the main thread.

@@ -53,7 +53,9 @@ class AgentProfileTests(unittest.TestCase):
         data = tomllib.loads((ROOT / "agents" / "Executor.toml").read_text(encoding="utf-8"))
         instructions = data["developer_instructions"]
         self.assertIn("Treat every check named by the parent as required", instructions)
-        self.assertIn("add it and run it", instructions)
+        self.assertIn("针对性测试", instructions)
+        self.assertIn("效果尚未验证", instructions)
+        self.assertIn("可恢复产物", instructions)
 
     def test_reviewer_is_bounded_by_the_review_packet(self) -> None:
         data = tomllib.loads((ROOT / "agents" / "Reviewer.toml").read_text(encoding="utf-8"))

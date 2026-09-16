@@ -147,3 +147,6 @@ Preserve these boundaries when customizing:
 - Keep unresolved user intent, product, editorial, architecture, and safety decisions in the main thread.
 - Keep `default` as a low-cost no-work guard; never repurpose it as a general Agent.
 - Ask before replacing an unavailable configured model with another model.
+
+
+单次复杂任务优先按主流程交由主线程判断，不需要新增常驻强模型角色。确需改变原角色的模型时，只有实际验证宿主支持覆盖才使用单次覆盖；工具参数可见不代表固定profile被覆盖。覆盖不可用时由主线程继续，不另起CLI绕过边界。长期调整需要已有用户授权，并同步运行配置、安装模板、路由说明和外部选型记录；保留可恢复的原值。

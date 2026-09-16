@@ -42,7 +42,13 @@ TOML 里的 sandbox 是 profile 默认值，不是绝对隔离边界；父线程
 
 ## 安装
 
-先安装 Skill：
+可以把仓库地址交给 Agent：
+
+```text
+请帮我安装这个 Skill：https://github.com/oil-oil/codex-team-mode
+```
+
+也可以通过命令安装 Skill：
 
 ```bash
 npx skills add oil-oil/codex-team-mode
@@ -63,6 +69,23 @@ onboarding 完成后，Codex 会主动说明安装了什么，以及怎样只关
 ```
 
 用户不用逐个指定 Agent。主线程会按任务价值动态选择够用的最小团队，并对汇总后的结果负责。
+
+## 复杂任务与复审人数
+
+三个角色的默认模型保持不变。复杂任务先区分输入、验收、环境和推理问题；主线程保留关键判断，必要时才在宿主支持并验证生效的前提下做单次模型升级，不要求常驻第四个工作角色。
+
+一般变更默认由一名 Reviewer 检查相关风险。代码质量、性能、复用是视角，不是三个人数配额；只有不同风险的证据范围可独立检查、并行确有收益时才增加复审者。最终交接和自动测试通过都不代替真实效果验收。
+
+## 本地用量与验证
+
+用量诊断需要 Python 3.10+，默认读取本地活动和归档会话，只输出聚合与运行元数据，不上传日志。模型处理任务本身仍遵循宿主的模型服务与数据设置。统计会去除可确认的重复计数快照，最终回复与完成事件分别展示；费用使用带日期的固定Standard费率，不是账单或质量分数。`--days` 按本地会话创建日期过滤，并非统计期间所有事件；旧任务续跑用 `--task-id` 或 `--all`。
+
+```bash
+python3 skills/team-mode/scripts/usage_by_model.py --days 7 --by-agent --json
+python3 -m unittest discover -s tests
+```
+
+Windows 可使用 `py -3`；当前在macOS验证，其他操作系统尚未实机验证。安装命令依赖Node.js/npx，核心用量脚本仅用Python标准库；没有子Agent能力时由主线程完成，不宣称小队已运行。
 
 ## 自定义
 
